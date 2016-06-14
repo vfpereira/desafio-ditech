@@ -18,4 +18,12 @@ class DefaultController extends Controller
             'base_dir' => realpath($this->getParameter('kernel.root_dir').'/..'),
         ]);
     }
+	
+	/**
+     * @Route("/admin/users", name="adminUsers")
+    */
+	public function adminUsers(Request $request)
+	{
+		return $this->render('default/admin.html.twig');
+	}
 }
