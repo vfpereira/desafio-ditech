@@ -48,10 +48,10 @@
 			<div class="inner">
 			<ul>
 				<li>
-					<a href="#" class="selected_lk"><span class="l"><span></span></span><span class="m"><em>Usuários</em><span></span></span><span class="r"><span></span></span></a>
+					<a href="{{ path('adminUsers') }}/{{admin.id}}" ><span class="l"><span></span></span><span class="m"><em>Usuários</em><span></span></span><span class="r"><span></span></span></a>
 				</li>
 				<li>
-					<a href="{{ path('adminSalas') }}/{{admin.id}}"><span class="l"><span></span></span><span class="m"><em>Salas</em><span></span></span><span class="r"><span></span></span></a>
+					<a href="{{ path('adminSalas') }}/{{admin.id}}" class="selected_lk"><span class="l"><span></span></span><span class="m"><em>Salas</em><span></span></span><span class="r"><span></span></span></a>
 				</li>
 		    </ul>
 			</div>
@@ -91,7 +91,7 @@
 						<div class="title_wrapper_inner">
 							<span class="title_wrapper_middle"></span>
 							<div class="title_wrapper_content">
-								<h2>Usuários:</h2>
+								<h2>Salas:</h2>
 							</div>
 						</div>
 						<span class="title_wrapper_bottom"></span>
@@ -107,7 +107,7 @@
 							<div class="table_tabs_menu">
 							<!--[if !IE]>start  tabs<![endif]-->
 							<!--[if !IE]>end  tabs<![endif]-->
-							<a href="#" class="update"><span><span><em>Adicionar novo usuário</em><strong></strong></span></span></a>
+							<a href="{{ path('adminSalaAdd') }}/{{admin.id}}" class="update"><span><span><em>Adicionar nova Sala</em><strong></strong></span></span></a>
 							</div>
 						
 							<!--[if !IE]>start table_wrapper<![endif]-->
@@ -126,9 +126,9 @@
 										<td>
 											<div class="actions_menu">
 												<ul>
-													<li><a class="details" href="{{ path('adminUsersDetail') }}/{{item.id}}/{{admin.id}}">Details</a></li>
-													<li><a class="edit" href="{{ path('adminUsersEdit') }}/{{item.id}}/{{admin.id}}">Edit</a></li>
-													<li><a class="delete" href="{{ path('adminUsersDelete')}}/{{item.id}}/{{admin.id}}">Delete</a></li>
+													<li><a class="details" href="{{ path('adminSalaDetail') }}/{{item.id}}/{{admin.id}}">Details</a></li>
+													<li><a class="edit" href="{{ path('adminSalaEdit') }}/{{item.id}}/{{admin.id}}">Edit</a></li>
+													<li><a class="delete" href="{{ path('adminSalaDelete')}}/{{item.id}}/{{admin.id}}">Delete</a></li>
 												</ul>
 											</div>
 										</td>

@@ -6,7 +6,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Usuario;
-
+use AppBundle\Entity\Sala;
 class DefaultController extends Controller
 {
     /**
@@ -23,7 +23,7 @@ class DefaultController extends Controller
 
 			if(!$this->seekUserbyEmail($usuario->getEmail()))
 			{
-				$this->addUser($usuario);
+				$this->add($usuario);
 				return $this->render('default/index.html.twig', ['msg' =>"Cadastro efetuado com sucesso. Para continuar faça o login"]	);
 			}				
 		}		
@@ -33,7 +33,11 @@ class DefaultController extends Controller
 			$user = $this->getDoctrine()
 			             ->getRepository('AppBundle:Usuario')
 					     ->findAll();
-			return $this->render('default/admin.html.twig',['user' => $user]);	
+			$email = $this->getDoctrine()
+						  ->getRepository('AppBundle:Usuario')
+						  ->findOneByEmail($request->request->get('email'));			 
+			
+			return $this->render('default/admin.html.twig',['user' => $user, 'admin' =>$email]);	
 		}
 		else 
 		{
@@ -44,30 +48,41 @@ class DefaultController extends Controller
     }
 	
 	/**
-     * @Route("/admin/users/", name="adminUsers")
+     * @Route("/admin/users/{adminId}", name="adminUsers", defaults={"adminId"=0})
     */
-	public function adminUsers(Request $request)
-	{
-		return $this->render('default/admin.html.twig');
+	public function adminUsers(Request $request,$adminId)
+	{  
+	    $user = $this->getDoctrine()
+		             ->getRepository('AppBundle:Usuario')
+				     ->findAll();
+		
+		$admin = $this->getDoctrine()
+		    		 ->getRepository('AppBundle:Usuario')
+					 ->findOneById($adminId);
+		
+		return $this->render('default/admin.html.twig',['user' => $user,'admin' =>$admin]);
 	}
 	
 	
 	/**
-     * @Route("/admin/usersDetail/{id}", name="adminUsersDetail" , defaults={"id" = 0})
+     * @Route("/admin/usersDetail/{id}/{adminId}", name="adminUsersDetail" , defaults={"id" = 0,"adminId"=0})
     */
-	public function adminUsersDetail(Request $request,$id)
+	public function adminUsersDetail(Request $request,$id,$adminId)
 	{
 		$user = $this->getDoctrine()
 					 ->getRepository('AppBundle:Usuario')
 					 ->findOneById($id);
-		
-		return $this->render('default/adminUserDetail.html.twig',['user' => $user]);
+		$admin = $this->getDoctrine()
+					 ->getRepository('AppBundle:Usuario')
+					 ->findOneById($adminId);	
+	
+		return $this->render('default/adminUserDetail.html.twig',['user' => $user,'admin' => $admin]);
 	}
 	
 	/**
-     * @Route("/admin/usersEdit/{id}", name="adminUsersEdit" , defaults={"id" = 0})
+     * @Route("/admin/usersEdit/{id}/{adminId}", name="adminUsersEdit" , defaults={"id" = 0,"adminId"=0})
     */
-	public function adminUsersEdit(Request $request,$id)
+	public function adminUsersEdit(Request $request,$id,$adminId)
 	{   
 		
 		if ($request->request->get('edit'))
@@ -82,25 +97,133 @@ class DefaultController extends Controller
 		$user = $this->getDoctrine()
 					 ->getRepository('AppBundle:Usuario')
 					 ->findOneById($id);
+					 
+		$admin = $this->getDoctrine()
+					 ->getRepository('AppBundle:Usuario')
+					 ->findOneById($adminId);
 		
-		return $this->render('default/adminUserEdit.html.twig',['user' => $user]);
+		return $this->render('default/adminUserEdit.html.twig',['user' => $user,'admin'=>$admin]);
 	}
 	
 	/**
-     * @Route("/admin/usersDelete/{id}", name="adminUsersDelete" , defaults={"id" = 0})
+     * @Route("/admin/usersDelete/{id}/{adminId}", name="adminUsersDelete" , defaults={"id" = 0,"adminId"=0})
     */	
-	public function adminUsersDelete(Request $request,$id)
+	public function adminUsersDelete(Request $request,$id,$adminId)
 	{   
 		
 		$user = $this->getDoctrine()
 					 ->getRepository('AppBundle:Usuario')
 					 ->findOneById($id);
 		
-		$this->deleteUser($user);
+		$this->deletes($user);
 		
-		return $this->render('default/admin.html.twig');
+		$user = $this->getDoctrine()
+		             ->getRepository('AppBundle:Usuario')
+				     ->findAll();
+		
+		$admin = $this->getDoctrine()
+		    		 ->getRepository('AppBundle:Usuario')
+					 ->findOneById($adminId);
+		
+		if ($id==$adminId)
+			return $this->render('default/index.html.twig', ['msg' =>""]	);
+		else
+			return $this->render('default/admin.html.twig',['user' => $user,'admin' =>$admin]);
 	}
 	
+		/**
+     * @Route("/admin/salas/{adminId}", name="adminSalas", defaults={"adminId"=0})
+    */
+	public function adminSalas(Request $request,$adminId)
+	{  
+	    $user = $this->getDoctrine()
+		             ->getRepository('AppBundle:Sala')
+				     ->findAll();
+		
+		$admin = $this->getDoctrine()
+		    		 ->getRepository('AppBundle:Usuario')
+					 ->findOneById($adminId);
+		
+		return $this->render('default/adminSalas.html.twig',['user' => $user,'admin' =>$admin]);
+	}
+	
+		/**
+     * @Route("/admin/salaAdd/{adminId}", name="adminSalaAdd" , defaults={"adminId"=0})
+    */
+	public function adminSalaAdd(Request $request,$adminId)
+	{   
+		
+		$admin = $this->getDoctrine()
+					 ->getRepository('AppBundle:Sala')
+					 ->findOneById($adminId);
+					 
+		if ($request->request->get('add'))
+		{	
+			$sala=new sala($request->request->get('name'));
+			$this->add($sala);
+			
+		}
+		
+		return $this->render('default/adminAddSala.html.twig',['admin'=>$admin]);
+	}
+	
+	/**
+     * @Route("/admin/salaDetail/{id}/{adminId}", name="adminSalaDetail" , defaults={"id" = 0,"adminId"=0})
+    */
+	public function adminSalaDetail(Request $request,$id,$adminId)
+	{
+		$sala = $this->getDoctrine()
+					 ->getRepository('AppBundle:Sala')
+					 ->findOneById($id);
+		$admin = $this->getDoctrine()
+					 ->getRepository('AppBundle:Usuario')
+					 ->findOneById($adminId);	
+	
+		return $this->render('default/adminSalaDetail.html.twig',['user' => $sala,'admin' => $admin]);
+	}
+	
+	/**
+    * @Route("/admin/salaEdit/{id}/{adminId}", name="adminSalaEdit" , defaults={"id" = 0,"adminId"=0})
+    */
+	public function adminSalaEdit(Request $request,$id,$adminId)
+	{   
+		
+		if ($request->request->get('edit'))
+			$this->updateSala($id,$request->request->get('name'));
+			
+		
+		$sala = $this->getDoctrine()
+					 ->getRepository('AppBundle:Sala')
+					 ->findOneById($id);
+					 
+		$admin = $this->getDoctrine()
+					 ->getRepository('AppBundle:Usuario')
+					 ->findOneById($adminId);
+		return $this->render('default/adminSalaEdit.html.twig',['user' => $sala,'admin'=>$admin]);
+	}
+	
+		/**
+     * @Route("/admin/salaDelete/{id}/{adminId}", name="adminSalaDelete" , defaults={"id" = 0,"adminId"=0})
+    */	
+	public function adminSalaDelete(Request $request,$id,$adminId)
+	{   
+		
+		$sala = $this->getDoctrine()
+					 ->getRepository('AppBundle:Sala')
+					 ->findOneById($id);
+		
+		$this->deletes($sala);
+		
+		$sala = $this->getDoctrine()
+		             ->getRepository('AppBundle:Sala')
+				     ->findAll();
+		
+		$admin = $this->getDoctrine()
+		    		 ->getRepository('AppBundle:Usuario')
+					 ->findOneById($adminId);
+		
+		return $this->render('default/adminSalas.html.twig',['user' => $sala,'admin' =>$admin]);
+	}
 	
 	function seekUserbyEmail($email)
 	{
@@ -115,7 +238,7 @@ class DefaultController extends Controller
 	}
 	
 	
-	function deleteUser($usuario)
+	function deletes($usuario)
 	{
 		$em = $this->getDoctrine()->getManager();
 
@@ -127,7 +250,7 @@ class DefaultController extends Controller
 	}
 	
 	
-	function addUser($usuario)
+	function add($usuario)
 	{
 		$em = $this->getDoctrine()->getManager();
 
@@ -145,12 +268,27 @@ class DefaultController extends Controller
 
 		if (!$user) 
 		{
-			throw $this->createNotFoundException('No product found for id '.$userId);
+			throw $this->createNotFoundException('No user found for id '.$userId);
 		}
 
 		$user->setName($name);
 		$user->setLastName($lastName);
 		$user->setEmail($email);
+		$em->flush();
+
+	}
+	
+	function updateSala($userId,$name)
+	{
+		$em = $this->getDoctrine()->getManager();
+		$user = $em->getRepository('AppBundle:Sala')->find($userId);
+
+		if (!$user) 
+		{
+			throw $this->createNotFoundException('No sala found for id '.$userId);
+		}
+
+		$user->setName($name);
 		$em->flush();
 
 	}

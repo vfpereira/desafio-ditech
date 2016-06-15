@@ -72,8 +72,7 @@
 							<div class="title_wrapper_content">
 								<h2>Detalhes do Usuario</h2>
 								<ul class="section_menu section_nav right">
-									<li><a href="#" class="section_back"><span class="l"><span></span></span><span class="m"><em>Back</em><span></span></span><span class="r"><span></span></span></a></li>
-									<li><a href="#" class="section_edit"><span class="l"><span></span></span><span class="m"><em>Edit All</em><span></span></span><span class="r"><span></span></span></a></li>
+									<li><a href="{{ path('adminUsers')}}/{{admin.id}}" class="section_back"><span class="l"><span></span></span><span class="m"><em>Back</em><span></span></span><span class="r"><span></span></span></a></li>
 								</ul>
 							</div>
 						</div>
@@ -91,7 +90,7 @@
 							<!--[if !IE]>start product content<![endif]-->
 								<div id="product_content">
 									<h3>Usuario</h3>
-									<form action="{{ path('adminUsersEdit')}}/{{user.id}}" method="post" >
+									<form action="{{ path('adminUsersEdit')}}/{{user.id}}/{{admin.id}}" method="post" >
 									<!--[if !IE]>start fieldset<![endif]-->
 									<fieldset>
 									<!--[if !IE]>start modules<![endif]-->

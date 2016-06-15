@@ -1,0 +1,17 @@
+AppBundle\Entity\Sala:
+    type: entity
+    table: null
+    repositoryClass: AppBundle\Repository\SalaRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+  
+    fields:
+        name:
+            type: string
+            length: 256        
+   
+    lifecycleCallbacks: {  }

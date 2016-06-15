@@ -51,7 +51,7 @@
 					<a href="#" class="selected_lk"><span class="l"><span></span></span><span class="m"><em>Usuários</em><span></span></span><span class="r"><span></span></span></a>
 				</li>
 				<li>
-					<a href="#"><span class="l"><span></span></span><span class="m"><em>P</em><span></span></span><span class="r"><span></span></span></a>
+					<a href="#"><span class="l"><span></span></span><span class="m"><em>Salas</em><span></span></span><span class="r"><span></span></span></a>
 				</li>
 		    </ul>
 			</div>
@@ -70,9 +70,9 @@
 						<div class="title_wrapper_inner">
 							<span class="title_wrapper_middle"></span>
 							<div class="title_wrapper_content">
-								<h2>Detalhes do Usuario</h2>
+								<h2>Detalhes da Sala</h2>
 								<ul class="section_menu section_nav right">
-									<li><a href="{{ path('adminUsers')}}/{{admin.id}}" class="section_back"><span class="l"><span></span></span><span class="m"><em>Back</em><span></span></span><span class="r"><span></span></span></a></li>
+									<li><a href="{{ path('adminSalas')}}/{{admin.id}}" class="section_back"><span class="l"><span></span></span><span class="m"><em>Back</em><span></span></span><span class="r"><span></span></span></a></li>
 								</ul>
 							</div>
 						</div>
@@ -89,7 +89,7 @@
 						<div id="product_page">
 							<!--[if !IE]>start product content<![endif]-->
 								<div id="product_content">
-									<h3>Usuario</h3>
+									<h3>Sala</h3>
 									
 									<!--[if !IE]>start modules<![endif]-->
 									<div class="modules">
@@ -110,25 +110,7 @@
 										<!--[if !IE]>end module<![endif]-->
 										
 										<!--[if !IE]>start module<![endif]-->
-										<div class="module">
-											<!--[if !IE]>start module top<![endif]-->
-											<div class="module_top">
-												<h5>Sobrenome</h5>
-											</div>
-											<div class="module_bottom">
-												{{user.lastname}}
-											</div>
-
-										</div>
-										<div class="module">
-											<!--[if !IE]>start module top<![endif]-->
-											<div class="module_top">
-												<h5>Email</h5>				
-											</div>
-											<div class="module_bottom">
-												{{user.email}}
-											</div>
-
+										
 										</div>
 										
 										
