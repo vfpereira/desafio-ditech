@@ -119,10 +119,10 @@
 										<th><a href="#" class="asc">Name</a></th>
 										<th style="width: 165px;">Actions</th>
 									</tr>
-									
+									{% for item in user %}
 									<tr class="first">
-										<td>1.</td>
-										<td><a href="#" class="product_name">Flash Website Templates Package</a></td>
+										<td>{{item.id}}</td>
+										<td><a href="#" class="product_name">{{item.name}}</a></td>
 										<td>
 											<div class="actions_menu">
 												<ul>
@@ -133,7 +133,7 @@
 											</div>
 										</td>
 									</tr>
-									
+									 {% endfor %}
 									
 									
 									
