@@ -1,0 +1,22 @@
+AppBundle\Entity\Horario:
+    type: entity
+    table: null
+    repositoryClass: AppBundle\Repository\HorarioRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+  
+    fields:
+        salaId:
+            type: integer
+        usuarioId:
+            type: integer
+        horario:
+           type: string
+           length: 2               
+          
+   
+    lifecycleCallbacks: {  }
