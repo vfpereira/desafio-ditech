@@ -2,6 +2,9 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+
+
+
 	<div class="form">
 		<ul class="tab-group">
 			<li class="tab active"><a href="#signup">Sign Up</a></li>
@@ -10,41 +13,45 @@
       
 		<div class="tab-content">
 			<div id="signup">   
+			{% if msg %}
+				<h1>{{	msg   }}</h1>
+			{% endif %}		
 				<h1>Cadastre-se</h1>
           
-				<form action="/" method="post">
+				<form action="{{ path('homepage') }}" method="post">
           			<div class="top-row">
 						<div class="field-wrap">
 							<label>
 								Nome<span class="req">*</span>
 							</label>
-							<input type="text" required autocomplete="off" />
+							<input name="_nome" type="text" required autocomplete="off" />
 						</div>
         				<div class="field-wrap">
 							<label>
 								Sobrenome<span class="req">*</span>
 							</label>
-							<input type="text"required autocomplete="off"/>
+							<input name="_sobrenome" type="text"required autocomplete="off"/>
 						</div>
 					</div>
 					<div class="field-wrap">
 						<label>
 							Email <span class="req">*</span>
 						</label>
-						<input type="email"required autocomplete="off"/>
+						<input name="_email" type="email"required autocomplete="off"/>
 					</div>        
 					<div class="field-wrap">
 						<label>
 							Password<span class="req">*</span>
 						</label>
-						<input type="password"required autocomplete="off"/>
+						<input name="_password" type="password"required autocomplete="off"/>
 					</div>
 					<button type="submit" class="button button-block"/>Registro</button>
 				</form>
 			</div>
         
-			<div id="login">   
-				<h1>Bem Vindo de Volta!</h1>         
+			<div id="login">
+	
+					<h1>Bem Vindo de Volta!</h1>   		      
 				<form action="/" method="post">
 					<div class="field-wrap">
 						<label>

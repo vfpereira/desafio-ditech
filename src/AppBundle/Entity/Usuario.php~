@@ -1,0 +1,15 @@
+<?php
+
+namespace DesafioBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
+
+/**
+ * @ORM\Entity(repositoryClass="DesafioBundle\Repository\UsuarioRepository")
+ * @ORM\Table(name="symfony")
+ *
+ */
+class Usuario
+{
+}
