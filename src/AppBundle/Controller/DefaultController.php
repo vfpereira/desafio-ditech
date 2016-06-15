@@ -44,7 +44,7 @@ class DefaultController extends Controller
     }
 	
 	/**
-     * @Route("/admin/users", name="adminUsers")
+     * @Route("/admin/users/", name="adminUsers")
     */
 	public function adminUsers(Request $request)
 	{
@@ -53,11 +53,52 @@ class DefaultController extends Controller
 	
 	
 	/**
-     * @Route("/admin/usersDetail", name="adminUsersDetail")
+     * @Route("/admin/usersDetail/{id}", name="adminUsersDetail" , defaults={"id" = 0})
     */
-	public function adminUsersDetail(Request $request)
+	public function adminUsersDetail(Request $request,$id)
 	{
-		return $this->render('default/adminUserDetail.html.twig');
+		$user = $this->getDoctrine()
+					 ->getRepository('AppBundle:Usuario')
+					 ->findOneById($id);
+		
+		return $this->render('default/adminUserDetail.html.twig',['user' => $user]);
+	}
+	
+	/**
+     * @Route("/admin/usersEdit/{id}", name="adminUsersEdit" , defaults={"id" = 0})
+    */
+	public function adminUsersEdit(Request $request,$id)
+	{   
+		
+		if ($request->request->get('edit'))
+		{
+			$this->updateUser($id,
+			   			      $request->request->get('name'),
+						      $request->request->get('lastname'),
+						      $request->request->get('email'));
+		}	
+	
+		
+		$user = $this->getDoctrine()
+					 ->getRepository('AppBundle:Usuario')
+					 ->findOneById($id);
+		
+		return $this->render('default/adminUserEdit.html.twig',['user' => $user]);
+	}
+	
+	/**
+     * @Route("/admin/usersDelete/{id}", name="adminUsersDelete" , defaults={"id" = 0})
+    */	
+	public function adminUsersDelete(Request $request,$id)
+	{   
+		
+		$user = $this->getDoctrine()
+					 ->getRepository('AppBundle:Usuario')
+					 ->findOneById($id);
+		
+		$this->deleteUser($user);
+		
+		return $this->render('default/admin.html.twig');
 	}
 	
 	
@@ -73,6 +114,19 @@ class DefaultController extends Controller
 			return true;
 	}
 	
+	
+	function deleteUser($usuario)
+	{
+		$em = $this->getDoctrine()->getManager();
+
+		$em->remove($usuario);
+
+		$em->flush();
+
+		return true;
+	}
+	
+	
 	function addUser($usuario)
 	{
 		$em = $this->getDoctrine()->getManager();
@@ -82,6 +136,23 @@ class DefaultController extends Controller
 		$em->flush();
 
 		return true;
+	}
+	
+	function updateUser($userId,$name,$lastName,$email)
+	{
+		$em = $this->getDoctrine()->getManager();
+		$user = $em->getRepository('AppBundle:Usuario')->find($userId);
+
+		if (!$user) 
+		{
+			throw $this->createNotFoundException('No product found for id '.$userId);
+		}
+
+		$user->setName($name);
+		$user->setLastName($lastName);
+		$user->setEmail($email);
+		$em->flush();
+
 	}
 	
 	function checkUser($email,$password)

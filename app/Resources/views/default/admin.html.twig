@@ -126,9 +126,9 @@
 										<td>
 											<div class="actions_menu">
 												<ul>
-													<li><a class="details" href="#">Details</a></li>
-													<li><a class="edit" href="#">Edit</a></li>
-													<li><a class="delete" href="#">Delete</a></li>
+													<li><a class="details" href="{{ path('adminUsersDetail') }}/{{item.id}}">Details</a></li>
+													<li><a class="edit" href="{{ path('adminUsersEdit') }}/{{item.id}}">Edit</a></li>
+													<li><a class="delete" href="{{ path('adminUsersDelete')}}/{{item.id}}">Delete</a></li>
 												</ul>
 											</div>
 										</td>
