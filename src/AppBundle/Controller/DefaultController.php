@@ -272,7 +272,7 @@ class DefaultController extends Controller
 		return $this->render('default/adminSalas.html.twig',['user' => $sala,'admin' =>$admin]);
 	}
 	
-		/**
+	/**
     * @Route("/admin/salaReserva/{id}/{adminId}/{horarioId}", name="adminSalaReserva" , defaults={"id" = 0,"adminId"=0, "horarioId"=0})
     */
 	public function adminSalaReserva(Request $request,$id,$adminId,$horarioId)
@@ -281,6 +281,53 @@ class DefaultController extends Controller
 		$reserva = new horario($id,$adminId,$horarioId);
 
 		$this->add($reserva);
+		
+		$sala = $this->getDoctrine()
+					 ->getRepository('AppBundle:Sala')
+					 ->findOneById($id);
+					 
+		$admin = $this->getDoctrine()
+					 ->getRepository('AppBundle:Usuario')
+					 ->findOneById($adminId);
+					 
+		$horarios = $this->getDoctrine()
+		             ->getRepository('AppBundle:Horario')
+				     ->findAll();
+		
+		for ($i=0;$i<=24;$i++)			 
+		{
+			$horario[$i]['horario']=$i;					
+			$horario[$i]['reservado']='Sem reserva';
+			$horario[$i]['autor'] = '';
+		}
+		foreach ($horarios as $item)
+		{
+			$horario[$item->getId()]['reservado']='reservado';
+			
+		    $autor =$this->getDoctrine()
+						 ->getRepository('AppBundle:Usuario')
+					     ->findOneById($item->getUsuarioId());
+						 
+			$horario[$item->getId()]['autor']= $autor->getName();
+		}			 
+					 
+		return $this->render('default/adminSalaEdit.html.twig',['user' => $sala,'admin'=>$admin,'horarios'=>$horario]);
+	}
+	
+	
+	/**
+    * @Route("/admin/salaReserva/delete/{id}/{adminId}/{horarioId}", name="adminSalaReservaDelete" , defaults={"id" = 0,"adminId"=0, "horarioId"=0})
+    */
+	public function adminSalaReservaDelete(Request $request,$id,$adminId,$horarioId)
+	{   
+	
+		//$reserva = new horario($id,$adminId,$horarioId);
+		
+		$reserva = $this->getDoctrine()
+						->getRepository('AppBundle:Horario')
+						->findOneById(array('usuarioId' => $adminId, 'salaId' => $id,'horario'=>$horarioId));
+		
+		$this->deletes($reserva);
 		
 		$sala = $this->getDoctrine()
 					 ->getRepository('AppBundle:Sala')
