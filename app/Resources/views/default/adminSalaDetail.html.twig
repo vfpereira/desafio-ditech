@@ -14,28 +14,12 @@
 		<div id="header">
 			<div class="inner">
 				
-				
 				<!--[if !IE]>start user details<![endif]-->
 				<div id="user_details">
 					<ul id="user_details_menu">
-						<li class="welcome">Bem Vindo <strong>Administrator</strong></li>
+						<li class="welcome">Bem Vindo <strong>{{admin.name}}</strong></li>						
 						
-						<li>
-							<ul id="user_access">
-								<li class="last"><a href="#">Log out</a></li>
-							</ul>
-						</li>
-						
-						
-					</ul>
-					
-					<div id="server_details">
-						<dl>
-							<dt>Server time :</dt>
-							<dd>9:22 AM | 03/04/2009</dd>
-						</dl>
-					</div>
-					
+					</ul>					
 				</div>
 				
 				<!--[if !IE]>end user details<![endif]-->
@@ -48,10 +32,10 @@
 			<div class="inner">
 			<ul>
 				<li>
-					<a href="#" class="selected_lk"><span class="l"><span></span></span><span class="m"><em>Usu·rios</em><span></span></span><span class="r"><span></span></span></a>
+					<a href="{{ path('adminUsers') }}/{{admin.id}}" ><span class="l"><span></span></span><span class="m"><em>Usu√°rios</em><span></span></span><span class="r"><span></span></span></a>
 				</li>
 				<li>
-					<a href="#"><span class="l"><span></span></span><span class="m"><em>Salas</em><span></span></span><span class="r"><span></span></span></a>
+					<a href="{{ path('adminSalas') }}/{{admin.id}}" class="selected_lk"><span class="l"><span></span></span><span class="m"><em>Sala</em><span></span></span><span class="r"><span></span></span></a>
 				</li>
 		    </ul>
 			</div>
@@ -72,7 +56,7 @@
 							<div class="title_wrapper_content">
 								<h2>Detalhes da Sala</h2>
 								<ul class="section_menu section_nav right">
-									<li><a href="{{ path('adminSalas')}}/{{admin.id}}" class="section_back"><span class="l"><span></span></span><span class="m"><em>Back</em><span></span></span><span class="r"><span></span></span></a></li>
+									<li><a href="{{ path('adminSalas')}}/{{admin.id}}" class="section_back"><span class="l"><span></span></span><span class="m"><em>Voltar</em><span></span></span><span class="r"><span></span></span></a></li>
 								</ul>
 							</div>
 						</div>
@@ -170,22 +154,10 @@
 										<!--[if !IE]>start module<![endif]-->
 										
 										</div>
-										
-										
-										
-										
-										
-										
-										
-										
+	
 									</div>
 									<!--[if !IE]>end modules<![endif]-->
-									
-									
-							
-									
-									
-									
+	
 								</div>
 							<!--[if !IE]>end product content<![endif]-->
 							<!--[if !IE]>start product gallery<![endif]-->
@@ -201,13 +173,7 @@
 						
 					</div>
 					<!--[if !IE]>end section content<![endif]-->
-					
-					
-					
-					
-					
-					
-					
+	
 					
 			</div>
 	</div>
@@ -215,23 +181,7 @@
 	
 	<!--[if !IE]>start footer<![endif]-->
 	<div id="footer">
-		<div id="footer_inner">
-			<div class="inner">
-				
-				<div id="footer_info">
-					Powered by YourApp v1.2 | © 2009 Your Company. All rights reserved
-				</div>
-				
-				
-				<ul id="footer_menu">
-					<li class="first"><a href="#">Help</a></li>
-					<li><a href="#">Contact Support</a></li>
-				</ul>	
-				
-				
-				
-			</div>
-		</div>
+	
 	</div>
 	<!--[if !IE]>end footer<![endif]-->
 {% endblock %}

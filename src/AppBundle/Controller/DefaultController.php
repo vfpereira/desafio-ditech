@@ -40,7 +40,7 @@ class DefaultController extends Controller
 			
 			return $this->render('default/admin.html.twig',['user' => $user, 'admin' =>$email]);	
 		}
-		else 
+		else if ($request->request->get('email'))
 		{
 			return $this->render('default/index.html.twig', ['msg' =>"Usuario ou senha invalida"]	);
 		}
@@ -111,7 +111,13 @@ class DefaultController extends Controller
     */	
 	public function adminUsersDelete(Request $request,$id,$adminId)
 	{   
+		$horario = $this->getDoctrine()
+					 ->getRepository('AppBundle:Horario')
+					 ->findByusuarioId($id);
 		
+		foreach ($horario as $item)
+			$this->deletes($item);
+			
 		$user = $this->getDoctrine()
 					 ->getRepository('AppBundle:Usuario')
 					 ->findOneById($id);
@@ -153,18 +159,15 @@ class DefaultController extends Controller
     */
 	public function adminSalaAdd(Request $request,$adminId)
 	{   
-		
-		$admin = $this->getDoctrine()
-					 ->getRepository('AppBundle:Sala')
-					 ->findOneById($adminId);
-					 
 		if ($request->request->get('add'))
 		{	
 			$sala=new sala($request->request->get('name'));
 			$this->add($sala);
-			
 		}
-		
+		$admin = $this->getDoctrine()
+				 ->getRepository('AppBundle:Usuario')
+				 ->findOneById($adminId);
+			
 		return $this->render('default/adminAddSala.html.twig',['admin'=>$admin]);
 	}
 	
@@ -281,6 +284,13 @@ class DefaultController extends Controller
     */	
 	public function adminSalaDelete(Request $request,$id,$adminId)
 	{   
+	
+		$horario = $this->getDoctrine()
+					 ->getRepository('AppBundle:Horario')
+					 ->findBySalaId($id);
+		
+		foreach ($horario as $item)
+			$this->deletes($item);
 		
 		$sala = $this->getDoctrine()
 					 ->getRepository('AppBundle:Sala')
