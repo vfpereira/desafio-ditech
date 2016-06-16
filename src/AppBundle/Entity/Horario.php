@@ -10,7 +10,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @ORM\Table(name="symfony")
  *
  */
-class Usuario
+class Horario
 {
     /**
      * @ORM\Id
@@ -22,18 +22,24 @@ class Usuario
     /**
      * @ORM\Column(type="integer", unique=false)
      */
-    $private $salaId
+    private $salaId;
 	
 	 /**
      * @ORM\Column(type="integer", unique=false)
      */
-    $private $usuarioId
+    private $usuarioId;
 
 	 /**
      * @ORM\Column(type="string", unique=false)
      */
-    $private $horario
+    private $horario;
 
+	public function __construct($salaId,$usuarioId,$horario)
+	{   
+		$this->setsalaId($salaId);
+		$this->setusuarioId($usuarioId);
+		$this->sethorario($horario);
+	}
 	
     public function getId()
     {
@@ -60,7 +66,7 @@ class Usuario
     }
     public function setusuarioId($name)
     {
-        $this->salausuarioId = $name;
+        $this->usuarioId = $name;
     }	
     /**
      * {@inheritdoc}
@@ -73,3 +79,4 @@ class Usuario
     {
         $this->horario = $name;
     }	
+}

@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Usuario;
 use AppBundle\Entity\Sala;
+use AppBundle\Entity\Horario;
 class DefaultController extends Controller
 {
     /**
@@ -175,11 +176,34 @@ class DefaultController extends Controller
 		$sala = $this->getDoctrine()
 					 ->getRepository('AppBundle:Sala')
 					 ->findOneById($id);
-		$admin = $this->getDoctrine()
+		$admin =$this->getDoctrine()
 					 ->getRepository('AppBundle:Usuario')
-					 ->findOneById($adminId);	
+					 ->findOneById($adminId);
+		$horarios = $this->getDoctrine()
+		             ->getRepository('AppBundle:Horario')
+				     ->findAll();
+		
+		//var_dump($horarios);die;
+		
+		for ($i=0;$i<=24;$i++)			 
+		{
+			$horario[$i]['horario']=$i;					
+			$horario[$i]['reservado']='Sem reserva';
+			$horario[$i]['autor'] = '';
+		}
+		foreach ($horarios as $item)
+		{
+			$horario[$item->getId()]['reservado']='reservado';
+			
+		    $autor =$this->getDoctrine()
+						 ->getRepository('AppBundle:Usuario')
+					     ->findOneById($item->getUsuarioId());
+						 
+			$horario[$item->getId()]['autor']= $autor->getName();
+		}
+
 	
-		return $this->render('default/adminSalaDetail.html.twig',['user' => $sala,'admin' => $admin]);
+		return $this->render('default/adminSalaDetail.html.twig',['user' => $sala,'admin' => $admin,'horarios'=>$horario]);
 	}
 	
 	/**
@@ -199,8 +223,31 @@ class DefaultController extends Controller
 		$admin = $this->getDoctrine()
 					 ->getRepository('AppBundle:Usuario')
 					 ->findOneById($adminId);
-		return $this->render('default/adminSalaEdit.html.twig',['user' => $sala,'admin'=>$admin]);
+					 
+				$horarios = $this->getDoctrine()
+		             ->getRepository('AppBundle:Horario')
+				     ->findAll();
+		
+		for ($i=0;$i<=24;$i++)			 
+		{
+			$horario[$i]['horario']=$i;					
+			$horario[$i]['reservado']='Sem reserva';
+			$horario[$i]['autor'] = '';
+		}
+		foreach ($horarios as $item)
+		{
+			$horario[$item->getId()]['reservado']='reservado';
+			
+		    $autor =$this->getDoctrine()
+						 ->getRepository('AppBundle:Usuario')
+					     ->findOneById($item->getUsuarioId());
+						 
+			$horario[$item->getId()]['autor']= $autor->getName();
+		}			 
+					 
+		return $this->render('default/adminSalaEdit.html.twig',['user' => $sala,'admin'=>$admin,'horarios'=>$horario]);
 	}
+	
 	
 		/**
      * @Route("/admin/salaDelete/{id}/{adminId}", name="adminSalaDelete" , defaults={"id" = 0,"adminId"=0})
@@ -224,6 +271,49 @@ class DefaultController extends Controller
 		
 		return $this->render('default/adminSalas.html.twig',['user' => $sala,'admin' =>$admin]);
 	}
+	
+		/**
+    * @Route("/admin/salaReserva/{id}/{adminId}/{horarioId}", name="adminSalaReserva" , defaults={"id" = 0,"adminId"=0, "horarioId"=0})
+    */
+	public function adminSalaReserva(Request $request,$id,$adminId,$horarioId)
+	{   
+	
+		$reserva = new horario($id,$adminId,$horarioId);
+
+		$this->add($reserva);
+		
+		$sala = $this->getDoctrine()
+					 ->getRepository('AppBundle:Sala')
+					 ->findOneById($id);
+					 
+		$admin = $this->getDoctrine()
+					 ->getRepository('AppBundle:Usuario')
+					 ->findOneById($adminId);
+					 
+		$horarios = $this->getDoctrine()
+		             ->getRepository('AppBundle:Horario')
+				     ->findAll();
+		
+		for ($i=0;$i<=24;$i++)			 
+		{
+			$horario[$i]['horario']=$i;					
+			$horario[$i]['reservado']='Sem reserva';
+			$horario[$i]['autor'] = '';
+		}
+		foreach ($horarios as $item)
+		{
+			$horario[$item->getId()]['reservado']='reservado';
+			
+		    $autor =$this->getDoctrine()
+						 ->getRepository('AppBundle:Usuario')
+					     ->findOneById($item->getUsuarioId());
+						 
+			$horario[$item->getId()]['autor']= $autor->getName();
+		}			 
+					 
+		return $this->render('default/adminSalaEdit.html.twig',['user' => $sala,'admin'=>$admin,'horarios'=>$horario]);
+	}
+	
 	
 	function seekUserbyEmail($email)
 	{
@@ -292,6 +382,7 @@ class DefaultController extends Controller
 		$em->flush();
 
 	}
+	
 	
 	function checkUser($email,$password)
 	{

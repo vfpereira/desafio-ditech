@@ -138,11 +138,16 @@
 										<th><a href="#">Reservante</a></th>
 										
 									</tr>
+									{% for item in horarios %}
 									<tr class="first">
-										<td>1.</td>
-										<td><span class="approved">Approved</span></td>
-										<td>FB-H061</td>
-										
+										<td>{{item.horario}}:00</td>
+										{%if item.autor%}
+											<td><span class="approved">{{item.reservado}}</span></td>
+										{%else%}
+											<td><span class="">{{item.reservado}}</span></td>
+										{%endif%}
+										<td>{{item.autor}}</td>
+									{%endfor%}	
 									</tr>
 									
 									
