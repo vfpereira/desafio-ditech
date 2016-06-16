@@ -185,22 +185,35 @@ class DefaultController extends Controller
 		
 		//var_dump($horarios);die;
 		
-		for ($i=0;$i<=24;$i++)			 
+		for ($i=0;$i<=23;$i++)			 
 		{
 			$horario[$i]['horario']=$i;					
 			$horario[$i]['reservado']='Sem reserva';
 			$horario[$i]['autor'] = '';
+			$horario[$i]['autorId'] = 0;
+			$horario[$i]['outrasala']=0;
+			$query    = $this->getDoctrine()
+							 ->getRepository('AppBundle:Horario')
+							 ->findBy((array('usuarioId' => $adminId,'horario'=>$i)));
+			if (count($query)==1)
+			{
+				$horario[$i]['outrasala']=1;
+			}
+			
 		}
+	
 		foreach ($horarios as $item)
 		{
-			$horario[$item->getId()]['reservado']='reservado';
+			$horario[$item->getHorario()]['reservado']='reservado';
 			
 		    $autor =$this->getDoctrine()
 						 ->getRepository('AppBundle:Usuario')
 					     ->findOneById($item->getUsuarioId());
 						 
-			$horario[$item->getId()]['autor']= $autor->getName();
-		}
+			$horario[$item->getHorario()]['autor']= $autor->getName();
+			$horario[$item->getHorario()]['autorId'] = $item->getUsuarioId()	;	 
+			
+      	}
 
 	
 		return $this->render('default/adminSalaDetail.html.twig',['user' => $sala,'admin' => $admin,'horarios'=>$horario]);
@@ -223,28 +236,42 @@ class DefaultController extends Controller
 		$admin = $this->getDoctrine()
 					 ->getRepository('AppBundle:Usuario')
 					 ->findOneById($adminId);
-					 
-				$horarios = $this->getDoctrine()
-		             ->getRepository('AppBundle:Horario')
-				     ->findAll();
 		
-		for ($i=0;$i<=24;$i++)			 
+		$horarios = $this->getDoctrine()
+		             ->getRepository('AppBundle:Horario')
+				     ->findBysalaId($id);
+		
+		for ($i=0;$i<=23;$i++)			 
 		{
 			$horario[$i]['horario']=$i;					
 			$horario[$i]['reservado']='Sem reserva';
 			$horario[$i]['autor'] = '';
+			$horario[$i]['autorId'] = 0;
+			$horario[$i]['outrasala']=0;
+			$query    = $this->getDoctrine()
+							 ->getRepository('AppBundle:Horario')
+							 ->findBy((array('usuarioId' => $adminId,'horario'=>$i)));
+			if (count($query)==1)
+			{
+				$horario[$i]['outrasala']=1;
+			}
+			
 		}
+	
 		foreach ($horarios as $item)
 		{
-			$horario[$item->getId()]['reservado']='reservado';
+			$horario[$item->getHorario()]['reservado']='reservado';
 			
 		    $autor =$this->getDoctrine()
 						 ->getRepository('AppBundle:Usuario')
 					     ->findOneById($item->getUsuarioId());
 						 
-			$horario[$item->getId()]['autor']= $autor->getName();
-		}			 
-					 
+			$horario[$item->getHorario()]['autor']= $autor->getName();
+			$horario[$item->getHorario()]['autorId'] = $item->getUsuarioId()	;	 
+			
+      	}
+		
+		
 		return $this->render('default/adminSalaEdit.html.twig',['user' => $sala,'admin'=>$admin,'horarios'=>$horario]);
 	}
 	
@@ -279,7 +306,7 @@ class DefaultController extends Controller
 	{   
 	
 		$reserva = new horario($id,$adminId,$horarioId);
-
+	
 		$this->add($reserva);
 		
 		$sala = $this->getDoctrine()
@@ -294,23 +321,36 @@ class DefaultController extends Controller
 		             ->getRepository('AppBundle:Horario')
 				     ->findAll();
 		
-		for ($i=0;$i<=24;$i++)			 
+		for ($i=0;$i<=23;$i++)			 
 		{
 			$horario[$i]['horario']=$i;					
 			$horario[$i]['reservado']='Sem reserva';
 			$horario[$i]['autor'] = '';
+			$horario[$i]['autorId'] = 0;
+			$horario[$i]['outrasala']=0;
+			$query    = $this->getDoctrine()
+							 ->getRepository('AppBundle:Horario')
+							 ->findBy((array('usuarioId' => $adminId,'horario'=>$i)));
+			if (count($query)==1)
+			{
+				$horario[$i]['outrasala']=1;
+			}
+			
 		}
+	
 		foreach ($horarios as $item)
 		{
-			$horario[$item->getId()]['reservado']='reservado';
+			$horario[$item->getHorario()]['reservado']='reservado';
 			
 		    $autor =$this->getDoctrine()
 						 ->getRepository('AppBundle:Usuario')
 					     ->findOneById($item->getUsuarioId());
 						 
-			$horario[$item->getId()]['autor']= $autor->getName();
-		}			 
-					 
+			$horario[$item->getHorario()]['autor']= $autor->getName();
+			$horario[$item->getHorario()]['autorId'] = $item->getUsuarioId()	;	 
+			
+      	}
+
 		return $this->render('default/adminSalaEdit.html.twig',['user' => $sala,'admin'=>$admin,'horarios'=>$horario]);
 	}
 	
@@ -322,11 +362,11 @@ class DefaultController extends Controller
 	{   
 	
 		//$reserva = new horario($id,$adminId,$horarioId);
-		
+;
 		$reserva = $this->getDoctrine()
 						->getRepository('AppBundle:Horario')
-						->findOneById(array('usuarioId' => $adminId, 'salaId' => $id,'horario'=>$horarioId));
-		
+						->findOneBy(array('usuarioId' => $adminId, 'salaId' => $id,'horario'=>$horarioId));
+	
 		$this->deletes($reserva);
 		
 		$sala = $this->getDoctrine()
@@ -341,22 +381,35 @@ class DefaultController extends Controller
 		             ->getRepository('AppBundle:Horario')
 				     ->findAll();
 		
-		for ($i=0;$i<=24;$i++)			 
+		for ($i=0;$i<=23;$i++)			 
 		{
 			$horario[$i]['horario']=$i;					
 			$horario[$i]['reservado']='Sem reserva';
 			$horario[$i]['autor'] = '';
+			$horario[$i]['autorId'] = 0;
+			$horario[$i]['outrasala']=0;
+			$query    = $this->getDoctrine()
+							 ->getRepository('AppBundle:Horario')
+							 ->findBy((array('usuarioId' => $adminId,'horario'=>$i)));
+			if (count($query)==1)
+			{
+				$horario[$i]['outrasala']=1;
+			}
+			
 		}
+	
 		foreach ($horarios as $item)
 		{
-			$horario[$item->getId()]['reservado']='reservado';
+			$horario[$item->getHorario()]['reservado']='reservado';
 			
 		    $autor =$this->getDoctrine()
 						 ->getRepository('AppBundle:Usuario')
 					     ->findOneById($item->getUsuarioId());
 						 
-			$horario[$item->getId()]['autor']= $autor->getName();
-		}			 
+			$horario[$item->getHorario()]['autor']= $autor->getName();
+			$horario[$item->getHorario()]['autorId'] = $item->getUsuarioId()	;	 
+			
+      	}			 
 					 
 		return $this->render('default/adminSalaEdit.html.twig',['user' => $sala,'admin'=>$admin,'horarios'=>$horario]);
 	}

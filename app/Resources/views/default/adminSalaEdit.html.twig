@@ -168,10 +168,22 @@
 										<td>
 											<div class="actions">
 												<ul>
+													{%if item.autor and admin.id==item.autorId  %}
+														<li><a class="action2" disabled="true" style="background-color:black;" href="{{ path('adminSalaReserva')}}/{{user.id}}/{{admin.id}}/{{item.horario}}"></a></li>
+														<li><a class="action4" href="{{ path('adminSalaReservaDelete')}}/{{user.id}}/{{admin.id}}/{{item.horario}}"></a></li>
+													{%elseif not item.autor and item.outrasala%}
+														<li><a class="action2" disabled="true" style="background-color:black;" href="{{ path('adminSalaReserva')}}/{{user.id}}/{{admin.id}}/{{item.horario}}"></a></li>
+														<li><a class="action4" href="{{ path('adminSalaReservaDelete')}}/{{user.id}}/{{admin.id}}/{{item.horario}}"></a></li>													
+													{%elseif not item.autor %}
+													<li><a class="action2" href="{{ path('adminSalaReserva')}}/{{user.id}}/{{admin.id}}/{{item.horario}}"></a></li>
+													<li><a class="action4" disabled="true" style="background-color:black;" href="{{ path('adminSalaReservaDelete')}}/{{user.id}}/{{admin.id}}/{{item.horario}}"></a></li>
+													{%else%}
+													<li><a class="action2" disabled="true" style="background-color:black;" href="{{ path('adminSalaReserva')}}/{{user.id}}/{{admin.id}}/{{item.horario}}"></a></li>
+													<li><a class="action4" disabled="true" style="background-color:black;" href="{{ path('adminSalaReservaDelete')}}/{{user.id}}/{{admin.id}}/{{item.horario}}"></a></li>
+													{%endif%}
 													
-													<li><a class="action2" href="{{ path('adminSalaReserva')}}/{{user.id}}/{{admin.id}}/{{item.horario}}">2</a></li>
 													
-													<li><a class="action4" href="{{ path('adminSalaReservaDelete')}}/{{user.id}}/{{admin.id}}/{{item.horario}}">4</a></li>
+													
 												</ul>
 											</div>
 										</td>
